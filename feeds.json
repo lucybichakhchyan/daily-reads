@@ -1,0 +1,8 @@
+[
+  { "id": "techmeme", "name": "Techmeme", "url": "https://www.techmeme.com/feed.xml", "about": "The day's biggest tech stories" },
+  { "id": "hacker-news", "name": "Hacker News", "url": "https://hnrss.org/newest?points=100", "about": "Posts with 100 or more points" },
+  { "id": "simon-willison", "name": "Simon Willison", "url": "https://simonwillison.net/atom/everything/", "about": "AI and developer tools" },
+  { "id": "latent-space", "name": "Latent Space", "url": "https://www.latent.space/feed", "about": "AI engineering" },
+  { "id": "lobsters", "name": "Lobsters", "url": "https://lobste.rs/rss", "about": "A technical community" },
+  { "id": "swamp-club", "name": "Swamp Club", "url": "https://swamp-club.com/feed.xml", "about": "Community writing" }
+]

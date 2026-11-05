@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daily Reads | Lucy Bichakhchyan</title>
+<meta name="description" content="The tech, developer and AI headlines I read each day.">
+<style>
+@font-face{font-family:Inter;src:url(fonts/Inter.ttf);font-weight:100 900;font-display:swap}
+@font-face{font-family:Playfair;src:url(fonts/Playfair.ttf);font-weight:400 900;font-style:normal;font-display:swap}
+@font-face{font-family:Playfair;src:url(fonts/Playfair-Italic.ttf);font-weight:400 900;font-style:italic;font-display:swap}
+:root{--canvas:#1a1a1a;--text:#f6f6f4;--muted:#b9b9b6;--accent:#8a2be2;--accent-light:#a762e7;--hairline:rgba(246,246,244,.25);--frame:rgba(246,246,244,.6);--radius:2px;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--canvas);color:var(--text);font:400 17px/1.5 Inter,system-ui,sans-serif}
+main{max-width:1040px;margin:0 auto;padding:clamp(24px,5vw,53px) clamp(18px,5vw,53px) 73px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:clamp(40px,8vw,73px)}
+.top a{color:var(--text);text-decoration:none}
+.top a:hover{color:var(--accent-light)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:500}
+.brand img{width:44px;height:44px;border-radius:50%;display:block}
+.eyebrow{margin:0 0 12px;color:var(--muted);font-size:15px}
+h1{font:400 clamp(52px,11vw,104px)/1 Playfair,Georgia,serif;letter-spacing:-.02em;margin:0}
+h1 em{font-style:italic}
+.updated{margin:18px 0 0;color:var(--muted);font-size:15px}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:clamp(32px,6vw,53px) 0 0;padding:3px 3px 16px;scrollbar-width:thin}
+.tab{flex:none;font:500 15px/1 Inter,system-ui,sans-serif;color:var(--text);background:transparent;border:1px solid var(--hairline);border-radius:var(--radius);padding:12px 14px;cursor:pointer}
+.tab:hover{color:var(--accent-light)}
+.tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:var(--text)}
+.about{color:var(--muted);font-size:15px;margin:0 0 6px;min-height:1.5em}
+ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--frame)}
+li{border-bottom:1px solid var(--hairline);padding:18px 0}
+.headline{display:block;color:var(--text);text-decoration:none;font-size:clamp(18px,2.4vw,21px);line-height:1.35;font-weight:500;overflow-wrap:anywhere}
+.headline:hover{color:var(--accent-light)}
+li.read .headline{color:var(--muted);font-weight:400}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;margin:6px 0 0;color:var(--muted);font-size:14px}
+.meta a{color:var(--muted)}
+.meta a:hover{color:var(--accent-light)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent-light);outline-offset:2px}
+.notice{margin:24px 0;color:var(--muted)}
+footer{margin-top:40px;color:var(--muted);font-size:14px}
+footer a{color:var(--muted)}
+footer a:hover{color:var(--accent-light)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <header class="top">
+    <a class="brand" href="https://www.bichakhchyan.com"><img src="images/avatar.png" alt="" width="44" height="44">Lucy Bichakhchyan</a>
+    <a href="https://github.com/lucybichakhchyan/daily-reads">GitHub</a>
+  </header>
+  <p class="eyebrow">( what I'm reading )</p>
+  <h1><em>Daily</em> reads</h1>
+  <p class="updated" id="updated">Loading the latest headlines.</p>
+  <div class="tabs" id="tabs" role="tablist" aria-label="News sources"></div>
+  <section id="panel" role="tabpanel" tabindex="-1">
+    <p class="about" id="about"></p>
+    <ol id="list"></ol>
+    <p class="notice" id="notice" hidden></p>
+  </section>
+  <footer>Headlines and links belong to their publishers. This page updates about once an hour.</footer>
+</main>
+<script>
+const READ_KEY = "daily-reads-opened";
+const $ = id => document.getElementById(id);
+let data = { sources: [], items: [] }, active = "all";
+
+function readOpened() { try { return new Set(JSON.parse(localStorage.getItem(READ_KEY) || "[]")); } catch { return new Set(); } }
+const opened = readOpened();
+function markOpened(url) {
+  opened.add(url);
+  try { localStorage.setItem(READ_KEY, JSON.stringify([...opened].slice(-500))); } catch {}
+}
+
+function timeAgo(date) {
+  if (!date) return "";
+  const minutes = Math.max(1, Math.round((Date.now() - new Date(date)) / 60000));
+  if (minutes < 60) return `${minutes} min ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours} hr ago`;
+  const days = Math.round(hours / 24);
+  return days === 1 ? "Yesterday" : `${days} days ago`;
+}
+
+function renderList() {
+  const source = data.sources.find(item => item.id === active);
+  $("about").textContent = source ? source.about : "Every source, newest first";
+  const items = data.items
+    .filter(item => active === "all" || item.source === active)
+    .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  $("list").replaceChildren(...items.map(item => {
+    const li = document.createElement("li");
+    if (opened.has(item.url)) li.className = "read";
+    const link = Object.assign(document.createElement("a"), { className: "headline", href: item.url, target: "_blank", rel: "noopener noreferrer", textContent: item.title });
+    link.addEventListener("click", () => { markOpened(item.url); li.className = "read"; });
+    const meta = Object.assign(document.createElement("p"), { className: "meta" });
+    const name = data.sources.find(entry => entry.id === item.source)?.name;
+    for (const text of [name, timeAgo(item.date)]) if (text) meta.append(Object.assign(document.createElement("span"), { textContent: text }));
+    if (item.comments) meta.append(Object.assign(document.createElement("a"), { href: item.comments, target: "_blank", rel: "noopener noreferrer", textContent: "Comments" }));
+    li.append(link, meta);
+    return li;
+  }));
+  const down = source ? !source.ok : false;
+  $("notice").hidden = !down && items.length > 0;
+  $("notice").textContent = down ? "This source didn't respond on the last update." : "There are no headlines here yet.";
+}
+
+function selectTab(id, focus = false) {
+  active = id;
+  document.querySelectorAll(".tab").forEach(tab => {
+    const selected = tab.dataset.id === id;
+    tab.setAttribute("aria-selected", String(selected));
+    tab.tabIndex = selected ? 0 : -1;
+    if (selected) {
+      if (focus) tab.focus();
+      tab.scrollIntoView({ block: "nearest", inline: "nearest" });
+    }
+  });
+  try { history.replaceState(null, "", id === "all" ? location.pathname : `#${id}`); } catch {}
+  renderList();
+}
+
+function buildTabs() {
+  const tabs = [{ id: "all", name: "All" }, ...data.sources];
+  $("tabs").replaceChildren(...tabs.map(item => {
+    const tab = Object.assign(document.createElement("button"), { className: "tab", type: "button", textContent: item.name });
+    tab.dataset.id = item.id;
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-controls", "panel");
+    tab.addEventListener("click", () => selectTab(item.id));
+    return tab;
+  }));
+}
+
+$("tabs").addEventListener("keydown", event => {
+  const tabs = [...document.querySelectorAll(".tab")];
+  const index = tabs.findIndex(tab => tab.dataset.id === active);
+  const moves = { ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: tabs.length - 1 };
+  if (!(event.key in moves)) return;
+  event.preventDefault();
+  selectTab(tabs[(moves[event.key] + tabs.length) % tabs.length].dataset.id, true);
+});
+
+fetch("data/feeds.json", { cache: "no-store" })
+  .then(response => { if (!response.ok) throw new Error(); return response.json(); })
+  .then(result => {
+    data = result;
+    $("updated").textContent = `Updated ${timeAgo(data.updatedAt).toLowerCase()}`;
+    buildTabs();
+    const wanted = location.hash.slice(1);
+    selectTab(data.sources.some(item => item.id === wanted) ? wanted : "all");
+  })
+  .catch(() => { $("updated").textContent = "The headlines couldn't be loaded. Reload the page to try again."; });
+</script>
+</body>
+</html>
