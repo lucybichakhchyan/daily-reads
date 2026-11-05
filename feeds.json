@@ -1,8 +1,23 @@
-[
-  { "id": "techmeme", "name": "Techmeme", "url": "https://www.techmeme.com/feed.xml", "about": "The day's biggest tech stories" },
-  { "id": "hacker-news", "name": "Hacker News", "url": "https://hnrss.org/newest?points=100", "about": "Posts with 100 or more points" },
-  { "id": "simon-willison", "name": "Simon Willison", "url": "https://simonwillison.net/atom/everything/", "about": "AI and developer tools" },
-  { "id": "latent-space", "name": "Latent Space", "url": "https://www.latent.space/feed", "about": "AI engineering" },
-  { "id": "lobsters", "name": "Lobsters", "url": "https://lobste.rs/rss", "about": "A technical community" },
-  { "id": "swamp-club", "name": "Swamp Club", "url": "https://swamp-club.com/feed.xml", "about": "Community writing" }
-]
+{
+  "tabs": [
+    { "id": "industry", "name": "Industry", "about": "The biggest tech stories and reporting" },
+    { "id": "developers", "name": "Developers", "about": "What developers are reading and discussing" },
+    { "id": "ai-labs", "name": "AI labs", "about": "News directly from AI labs and open source" },
+    { "id": "ai-analysis", "name": "AI analysis", "about": "Hands-on analysis of AI and developer tools" },
+    { "id": "swamp", "name": "Swamp", "about": "Writing from the Swamp community" }
+  ],
+  "feeds": [
+    { "id": "techmeme", "name": "Techmeme", "tab": "industry", "url": "https://www.techmeme.com/feed.xml" },
+    { "id": "ars-technica", "name": "Ars Technica", "tab": "industry", "url": "https://feeds.arstechnica.com/arstechnica/index" },
+    { "id": "mit-tech-review", "name": "MIT Technology Review", "tab": "industry", "url": "https://www.technologyreview.com/feed/" },
+    { "id": "hacker-news", "name": "Hacker News", "tab": "developers", "url": "https://hnrss.org/newest?points=100" },
+    { "id": "pragmatic-engineer", "name": "The Pragmatic Engineer", "tab": "developers", "url": "https://newsletter.pragmaticengineer.com/feed" },
+    { "id": "lobsters", "name": "Lobsters", "tab": "developers", "url": "https://lobste.rs/rss" },
+    { "id": "openai", "name": "OpenAI", "tab": "ai-labs", "url": "https://openai.com/news/rss.xml", "limit": 15 },
+    { "id": "google-deepmind", "name": "Google DeepMind", "tab": "ai-labs", "url": "https://deepmind.google/blog/rss.xml", "limit": 15 },
+    { "id": "hugging-face", "name": "Hugging Face", "tab": "ai-labs", "url": "https://huggingface.co/blog/feed.xml", "limit": 15 },
+    { "id": "simon-willison", "name": "Simon Willison", "tab": "ai-analysis", "url": "https://simonwillison.net/atom/everything/" },
+    { "id": "latent-space", "name": "Latent Space", "tab": "ai-analysis", "url": "https://www.latent.space/feed" },
+    { "id": "swamp-club", "name": "Swamp Club", "tab": "swamp", "url": "https://swamp-club.com/feed.xml" }
+  ]
+}

@@ -1,6 +1,6 @@
 # Daily Reads
 
-Daily Reads is the page I use to keep up with tech, developer and AI news. It collects headlines from a few feeds into one clean list, with a tab for each source.
+Daily Reads is the page I use to keep up with tech, developer and AI news. It collects headlines from a short list of sources into one clean page, with a tab for each topic.
 
 **[Read it here](https://lucybichakhchyan.github.io/daily-reads/)**
 
@@ -12,7 +12,7 @@ Links you open are dimmed in your own browser only.
 
 ## Change the sources
 
-Edit `feeds.json` and push the change. Each entry needs an `id`, `name`, `url` and short `about` line, and a new tab appears on the next update.
+Edit `feeds.json` and push the change. Each feed needs an `id`, `name`, `tab` and `url`, and an optional `limit`. Add a new entry to `tabs` to create a new topic tab.
 
 ## Run the tests
 

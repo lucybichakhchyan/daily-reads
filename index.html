@@ -13,10 +13,10 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--canvas);color:var(--text);font:400 17px/1.5 Inter,system-ui,sans-serif}
 main{max-width:1040px;margin:0 auto;padding:clamp(24px,5vw,53px) clamp(18px,5vw,53px) 73px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:clamp(40px,8vw,73px)}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;margin-bottom:clamp(40px,8vw,73px)}
 .top a{color:var(--text);text-decoration:none}
 .top a:hover{color:var(--accent-light)}
-.brand{display:flex;align-items:center;gap:12px;font-weight:500}
+.brand{display:flex;align-items:center;gap:12px;font-weight:500;white-space:nowrap}
 .brand img{width:44px;height:44px;border-radius:50%;display:block}
 .eyebrow{margin:0 0 12px;color:var(--muted);font-size:15px}
 h1{font:400 clamp(52px,11vw,104px)/1 Playfair,Georgia,serif;letter-spacing:-.02em;margin:0}
@@ -63,7 +63,7 @@ footer a:hover{color:var(--accent-light)}
 <script>
 const READ_KEY = "daily-reads-opened";
 const $ = id => document.getElementById(id);
-let data = { sources: [], items: [] }, active = "all";
+let data = { tabs: [], sources: [], items: [] }, active = "all";
 
 function readOpened() { try { return new Set(JSON.parse(localStorage.getItem(READ_KEY) || "[]")); } catch { return new Set(); } }
 const opened = readOpened();
@@ -83,10 +83,13 @@ function timeAgo(date) {
 }
 
 function renderList() {
-  const source = data.sources.find(item => item.id === active);
-  $("about").textContent = source ? source.about : "Every source, newest first";
+  const tab = data.tabs.find(item => item.id === active);
+  const sources = data.sources.filter(item => active === "all" || item.tab === active);
+  const ids = new Set(sources.map(item => item.id));
+  const down = sources.filter(item => !item.ok).map(item => item.name);
+  $("about").textContent = tab ? tab.about : "Every source, newest first";
   const items = data.items
-    .filter(item => active === "all" || item.source === active)
+    .filter(item => ids.has(item.source))
     .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
   $("list").replaceChildren(...items.map(item => {
     const li = document.createElement("li");
@@ -100,9 +103,8 @@ function renderList() {
     li.append(link, meta);
     return li;
   }));
-  const down = source ? !source.ok : false;
-  $("notice").hidden = !down && items.length > 0;
-  $("notice").textContent = down ? "This source didn't respond on the last update." : "There are no headlines here yet.";
+  $("notice").hidden = !down.length && items.length > 0;
+  $("notice").textContent = down.length ? `Not updated on the last run: ${down.join(", ")}.` : "There are no headlines here yet.";
 }
 
 function selectTab(id, focus = false) {
@@ -121,7 +123,7 @@ function selectTab(id, focus = false) {
 }
 
 function buildTabs() {
-  const tabs = [{ id: "all", name: "All" }, ...data.sources];
+  const tabs = [{ id: "all", name: "All" }, ...data.tabs];
   $("tabs").replaceChildren(...tabs.map(item => {
     const tab = Object.assign(document.createElement("button"), { className: "tab", type: "button", textContent: item.name });
     tab.dataset.id = item.id;
@@ -148,7 +150,7 @@ fetch("data/feeds.json", { cache: "no-store" })
     $("updated").textContent = `Updated ${timeAgo(data.updatedAt).toLowerCase()}`;
     buildTabs();
     const wanted = location.hash.slice(1);
-    selectTab(data.sources.some(item => item.id === wanted) ? wanted : "all");
+    selectTab(data.tabs.some(item => item.id === wanted) ? wanted : "all");
   })
   .catch(() => { $("updated").textContent = "The headlines couldn't be loaded. Reload the page to try again."; });
 </script>
