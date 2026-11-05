@@ -12,7 +12,7 @@ Links you open are dimmed in your own browser only.
 
 ## Change the sources
 
-Edit `feeds.json` and push the change. Each feed needs an `id`, `name`, `tab` and `url`, and an optional `limit`. Add a new entry to `tabs` to create a new topic tab.
+Edit `feeds.json` and push the change. Each feed needs an `id`, `name`, `tab` and `url`, and an optional `limit`. Set `attribution` to `true` when a feed puts the reporter and publication at the end of its headlines. Add a new entry to `tabs` to create a new topic tab.
 
 ## Run the tests
 

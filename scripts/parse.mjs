@@ -23,6 +23,19 @@ function linkOf(block) {
   return tag(block, "link");
 }
 
+/** Moves a closing "(Reporter/Publication)" out of a headline. */
+export function splitAttribution(item) {
+  const match = item.title.match(/^(.+?)\s*\(([^()]+)\)$/);
+  if (!match) return item;
+  const parts = match[2].split("/").map((part) => part.trim()).filter(Boolean);
+  return {
+    ...item,
+    title: match[1],
+    publisher: parts.at(-1),
+    author: parts.length > 1 ? parts.slice(0, -1).join(" / ") : null,
+  };
+}
+
 const isWebAddress = (url) => /^https?:\/\//.test(url);
 
 /** Reads RSS or Atom text into headlines and links, with no article text. */

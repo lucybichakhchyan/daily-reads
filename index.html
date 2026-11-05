@@ -12,49 +12,47 @@
 :root{--canvas:#1a1a1a;--text:#f6f6f4;--muted:#b9b9b6;--accent:#8a2be2;--accent-light:#a762e7;--hairline:rgba(246,246,244,.25);--frame:rgba(246,246,244,.6);--radius:2px;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--canvas);color:var(--text);font:400 17px/1.5 Inter,system-ui,sans-serif}
-main{max-width:1040px;margin:0 auto;padding:clamp(24px,5vw,53px) clamp(18px,5vw,53px) 73px}
-.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;margin-bottom:clamp(40px,8vw,73px)}
-.top a{color:var(--text);text-decoration:none}
+main{max-width:880px;margin:0 auto;padding:clamp(24px,5vw,44px) clamp(20px,5vw,44px) 73px}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;margin-bottom:clamp(36px,6vw,56px)}
+.top a{color:var(--muted);text-decoration:none}
 .top a:hover{color:var(--accent-light)}
-.brand{display:flex;align-items:center;gap:12px;font-weight:500;white-space:nowrap}
-.brand img{width:44px;height:44px;border-radius:50%;display:block}
-.eyebrow{margin:0 0 12px;color:var(--muted);font-size:15px}
-h1{font:400 clamp(52px,11vw,104px)/1 Playfair,Georgia,serif;letter-spacing:-.02em;margin:0}
+.top .brand{display:flex;align-items:center;gap:12px;color:var(--text);font-size:16px;white-space:nowrap}
+.brand img{width:36px;height:36px;border-radius:50%;display:block}
+.eyebrow{margin:0 0 8px;color:var(--muted);font-size:15px}
+h1{font:400 clamp(44px,8vw,72px)/1.05 Playfair,Georgia,serif;letter-spacing:-.02em;margin:0}
 h1 em{font-style:italic}
-.updated{margin:18px 0 0;color:var(--muted);font-size:15px}
-.tabs{display:flex;gap:6px;overflow-x:auto;margin:clamp(32px,6vw,53px) 0 0;padding:3px 3px 16px;scrollbar-width:thin}
-.tab{flex:none;font:500 15px/1 Inter,system-ui,sans-serif;color:var(--text);background:transparent;border:1px solid var(--hairline);border-radius:var(--radius);padding:12px 14px;cursor:pointer}
-.tab:hover{color:var(--accent-light)}
-.tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:var(--text)}
-.about{color:var(--muted);font-size:15px;margin:0 0 6px;min-height:1.5em}
-ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--frame)}
-li{border-bottom:1px solid var(--hairline);padding:18px 0}
-.headline{display:block;color:var(--text);text-decoration:none;font-size:clamp(18px,2.4vw,21px);line-height:1.35;font-weight:500;overflow-wrap:anywhere}
-.headline:hover{color:var(--accent-light)}
-li.read .headline{color:var(--muted);font-weight:400}
-.meta{display:flex;flex-wrap:wrap;gap:4px 14px;margin:6px 0 0;color:var(--muted);font-size:14px}
+.tabs{display:flex;flex-wrap:wrap;gap:0 clamp(16px,3vw,28px);margin:clamp(24px,4vw,36px) 0 0;border-bottom:1px solid var(--hairline)}
+.tab{font:400 16px/1.2 Inter,system-ui,sans-serif;color:var(--muted);background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:12px 2px;min-height:44px;cursor:pointer}
+.tab:hover{color:var(--text)}
+.tab[aria-selected=true]{color:var(--text);font-weight:600;border-bottom-color:var(--accent-light)}
+.utility{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 16px;padding:12px 0;color:var(--muted);font-size:14px}
+.utility p{margin:0}
+ol{list-style:none;margin:0;padding:0}
+li{border-bottom:1px solid var(--hairline);padding:22px 0}
+li:first-child{padding-top:12px}
+.headline{display:block;color:var(--text);text-decoration:none;font-size:clamp(19px,2.3vw,22px);line-height:1.4;font-weight:400;overflow-wrap:anywhere}
+.headline:hover,.headline:focus-visible{text-decoration:underline;text-decoration-color:var(--accent-light);text-decoration-thickness:1px;text-underline-offset:4px}
+li.read .headline{color:var(--muted)}
+.meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 20px;margin-top:10px;color:var(--muted);font-size:14px}
 .meta a{color:var(--muted)}
 .meta a:hover{color:var(--accent-light)}
-a:focus-visible,button:focus-visible{outline:2px solid var(--accent-light);outline-offset:2px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent-light);outline-offset:3px}
 .notice{margin:24px 0;color:var(--muted)}
-footer{margin-top:40px;color:var(--muted);font-size:14px}
-footer a{color:var(--muted)}
-footer a:hover{color:var(--accent-light)}
+footer{margin-top:32px;color:var(--muted);font-size:14px}
 [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <main>
   <header class="top">
-    <a class="brand" href="https://www.bichakhchyan.com"><img src="images/avatar.png" alt="" width="44" height="44">Lucy Bichakhchyan</a>
+    <a class="brand" href="https://www.bichakhchyan.com"><img src="images/avatar.png" alt="" width="36" height="36">Lucy Bichakhchyan</a>
     <a href="https://github.com/lucybichakhchyan/daily-reads">GitHub</a>
   </header>
   <p class="eyebrow">( what I'm reading )</p>
   <h1><em>Daily</em> reads</h1>
-  <p class="updated" id="updated">Loading the latest headlines.</p>
   <div class="tabs" id="tabs" role="tablist" aria-label="News sources"></div>
   <section id="panel" role="tabpanel" tabindex="-1">
-    <p class="about" id="about"></p>
+    <div class="utility"><p id="about"></p><p id="updated">Loading the latest headlines.</p></div>
     <ol id="list"></ol>
     <p class="notice" id="notice" hidden></p>
   </section>
@@ -87,7 +85,7 @@ function renderList() {
   const sources = data.sources.filter(item => active === "all" || item.tab === active);
   const ids = new Set(sources.map(item => item.id));
   const down = sources.filter(item => !item.ok).map(item => item.name);
-  $("about").textContent = tab ? tab.about : "Every source, newest first";
+  $("about").textContent = `${tab ? tab.about : "All sources"} · Newest first`;
   const items = data.items
     .filter(item => ids.has(item.source))
     .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
@@ -98,8 +96,10 @@ function renderList() {
     link.addEventListener("click", () => { markOpened(item.url); li.className = "read"; });
     const meta = Object.assign(document.createElement("p"), { className: "meta" });
     const name = data.sources.find(entry => entry.id === item.source)?.name;
-    for (const text of [name, timeAgo(item.date)]) if (text) meta.append(Object.assign(document.createElement("span"), { textContent: text }));
-    if (item.comments) meta.append(Object.assign(document.createElement("a"), { href: item.comments, target: "_blank", rel: "noopener noreferrer", textContent: "Comments" }));
+    const credit = item.publisher ? [item.publisher, item.author, `via ${name}`].filter(Boolean).join(" · ") : name;
+    const left = Object.assign(document.createElement("span"), { textContent: credit });
+    if (item.comments) left.append(" · ", Object.assign(document.createElement("a"), { href: item.comments, target: "_blank", rel: "noopener noreferrer", textContent: "Comments" }));
+    meta.append(left, Object.assign(document.createElement("span"), { textContent: timeAgo(item.date) }));
     li.append(link, meta);
     return li;
   }));
@@ -113,10 +113,7 @@ function selectTab(id, focus = false) {
     const selected = tab.dataset.id === id;
     tab.setAttribute("aria-selected", String(selected));
     tab.tabIndex = selected ? 0 : -1;
-    if (selected) {
-      if (focus) tab.focus();
-      tab.scrollIntoView({ block: "nearest", inline: "nearest" });
-    }
+    if (selected && focus) tab.focus();
   });
   try { history.replaceState(null, "", id === "all" ? location.pathname : `#${id}`); } catch {}
   renderList();

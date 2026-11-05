@@ -1,5 +1,5 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { parseFeed } from "./parse.mjs";
+import { parseFeed, splitAttribution } from "./parse.mjs";
 
 const { tabs, feeds } = JSON.parse(await readFile("feeds.json", "utf8"));
 
@@ -10,7 +10,8 @@ async function load(feed) {
       signal: AbortSignal.timeout(20000),
     });
     if (!response.ok) throw new Error(`status ${response.status}`);
-    const items = parseFeed(await response.text(), feed.id, feed.limit);
+    const parsed = parseFeed(await response.text(), feed.id, feed.limit);
+    const items = feed.attribution ? parsed.map(splitAttribution) : parsed;
     if (!items.length) throw new Error("no headlines found");
     return { ok: true, items };
   } catch (error) {

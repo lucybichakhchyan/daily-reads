@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { parseFeed } from "./parse.mjs";
+import { parseFeed, splitAttribution } from "./parse.mjs";
 
 test("reads an RSS item", () => {
   const [item] = parseFeed(`<rss><item><title><![CDATA[A &amp; B]]></title>
@@ -24,4 +24,17 @@ test("reads an Atom entry and prefers the alternate link", () => {
 
 test("drops anything without a web address", () => {
   assert.deepEqual(parseFeed("<rss><item><title>Bad</title><link>javascript:alert(1)</link></item></rss>", "demo"), []);
+});
+
+test("moves the reporter and publication out of a headline", () => {
+  const item = splitAttribution({ title: "Sources: a deal is close (Ada Lane/Financial Times)" });
+  assert.equal(item.title, "Sources: a deal is close");
+  assert.equal(item.author, "Ada Lane");
+  assert.equal(item.publisher, "Financial Times");
+});
+
+test("handles a publication with no reporter and leaves other titles alone", () => {
+  assert.equal(splitAttribution({ title: "A launch (OpenAI)" }).publisher, "OpenAI");
+  assert.equal(splitAttribution({ title: "A launch (OpenAI)" }).author, null);
+  assert.deepEqual(splitAttribution({ title: "No credit here" }), { title: "No credit here" });
 });

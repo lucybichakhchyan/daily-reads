@@ -7,7 +7,7 @@
     { "id": "swamp", "name": "Swamp", "about": "Writing from the Swamp community" }
   ],
   "feeds": [
-    { "id": "techmeme", "name": "Techmeme", "tab": "industry", "url": "https://www.techmeme.com/feed.xml" },
+    { "id": "techmeme", "name": "Techmeme", "tab": "industry", "url": "https://www.techmeme.com/feed.xml", "attribution": true },
     { "id": "ars-technica", "name": "Ars Technica", "tab": "industry", "url": "https://feeds.arstechnica.com/arstechnica/index" },
     { "id": "mit-tech-review", "name": "MIT Technology Review", "tab": "industry", "url": "https://www.technologyreview.com/feed/" },
     { "id": "hacker-news", "name": "Hacker News", "tab": "developers", "url": "https://hnrss.org/newest?points=100" },
